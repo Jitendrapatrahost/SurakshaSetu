@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SAARTHI - Alumni Network</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    body {
+      background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 20px;
+    }
+
+    .container {
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 900px;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      background: linear-gradient(to right, #4a6fa5, #2c3e50);
+      color: white;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .header h1 {
+      font-size: 2.5rem;
+      margin-bottom: 10px;
+      letter-spacing: 1px;
+    }
+
+    .header p {
+      font-size: 1.1rem;
+      opacity: 0.9;
+    }
+
+    .content {
+      display: flex;
+      min-height: 500px;
+    }
+
+    .form-container {
+      flex: 1;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .form-toggle {
+      display: flex;
+      margin-bottom: 30px;
+      border-bottom: 1px solid #eaeaea;
+    }
+
+    .toggle-btn {
+      padding: 12px 20px;
+      background: none;
+      border: none;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      color: #777;
+      transition: all 0.3s;
+      position: relative;
+    }
+
+    .toggle-btn.active {
+      color: #2c3e50;
+    }
+
+    .toggle-btn.active::after {
+      content: '';
+      position: absolute;
+      bottom: -1px;
+      left: 0;
+      width: 100%;
+      height: 3px;
+      background-color: #4a6fa5;
+    }
+
+    .form {
+      display: none;
+    }
+
+    .form.active {
+      display: block;
+      animation: fadeIn 0.5s;
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .form h2 {
+      margin-bottom: 25px;
+      color: #2c3e50;
+      font-size: 1.8rem;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+    }
+
+    .form-row {
+      display: flex;
+      gap: 15px;
+    }
+
+    .form-row .form-group {
+      flex: 1;
+    }
+
+    label {
+      display: block;
+      margin-bottom: 8px;
+      font-weight: 600;
+      color: #444;
+    }
+
+    input, textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 1rem;
+      transition: border 0.3s;
+    }
+
+    input:focus, textarea:focus {
+      outline: none;
+      border-color: #4a6fa5;
+      box-shadow: 0 0 0 2px rgba(74, 111, 165, 0.2);
+    }
+
+    textarea {
+      min-height: 100px;
+      resize: vertical;
+    }
+
+    .btn {
+      background: linear-gradient(to right, #4a6fa5, #2c3e50);
+      color: white;
+      border: none;
+      padding: 14px 20px;
+      border-radius: 5px;
+      font-size: 1.1rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s;
+      width: 100%;
+      margin-top: 10px;
+    }
+
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+
+    .switch-text {
+      margin-top: 15px;
+      text-align: center;
+      font-size: 0.95rem;
+      color: #444;
+    }
+
+    .switch-text a {
+      color: #4a6fa5;
+      font-weight: 600;
+      text-decoration: none;
+      margin-left: 5px;
+    }
+
+    .switch-text a:hover {
+      text-decoration: underline;
+    }
+
+    .info-section {
+      flex: 1;
+      background: linear-gradient(to bottom right, #4a6fa5, #2c3e50);
+      color: white;
+      padding: 40px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .info-section h2 {
+      font-size: 1.8rem;
+      margin-bottom: 20px;
+    }
+
+    .info-section p {
+      margin-bottom: 25px;
+      line-height: 1.6;
+      opacity: 0.9;
+    }
+
+    .features {
+      list-style: none;
+    }
+
+    .features li {
+      margin-bottom: 15px;
+      display: flex;
+      align-items: center;
+    }
+
+    .features li::before {
+      content: '✓';
+      margin-right: 10px;
+      background-color: rgba(255, 255, 255, 0.2);
+      width: 25px;
+      height: 25px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      .content {
+        flex-direction: column;
+      }
+
+      .info-section {
+        order: -1;
+        padding: 30px;
+      }
+
+      .form-container {
+        padding: 30px;
+      }
+
+      .form-row {
+        flex-direction: column;
+        gap: 0;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <h1>SurakshaSetu</h1>
+      <p>Join us on Suraksha Setu app and connect with our bridge to safer living and interactive learning.</p>
+    </div>
+
+    <div class="content">
+      <div class="form-container">
+        <div class="form-toggle">
+          <button class="toggle-btn active" data-form="login">Login</button>
+          <button class="toggle-btn" data-form="signup">Sign Up</button>
+        </div>
+
+        <!-- LOGIN FORM -->
+        <form id="login-form" class="form active">
+          <h2>Welcome</h2>
+          <div class="form-group">
+            <label for="login-email">Email Address</label>
+            <input type="email" id="login-email" placeholder="Enter your email" required>
+          </div>
+          <div class="form-group">
+            <label for="login-password">Password</label>
+            <input type="password" id="login-password" placeholder="Enter your password" required>
+          </div>
+          <button type="submit" class="btn">Login</button>
+          <p class="switch-text">Don't have an account? <a href="#" id="go-to-signup">Sign Up</a></p>
+        </form>
+
+        <!-- SIGNUP FORM -->
+        <form id="signup-form" class="form">
+          <h2>Create Your Account</h2>
+          <div class="form-row">
+            <div class="form-group">
+              <label for="full-name">Full Name</label>
+              <input type="text" id="full-name" placeholder="Enter your full name" required>
+            </div>
+            <div class="form-group">
+              <label for="email">Email Address</label>
+              <input type="email" id="email" placeholder="Enter your email" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="password">Password</label>
+              <input type="password" id="password" placeholder="Create a password" required>
+            </div>
+            <div class="form-group">
+              <label for="confirm-password">Confirm Password</label>
+              <input type="password" id="confirm-password" placeholder="Confirm your password" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="dob">Date of Birth</label>
+              <input type="text" id="dob" placeholder="dd-mm-yyyy" required>
+            </div>
+            <div class="form-group">
+              <label for="city">City</label>
+              <input type="text" id="city" placeholder="Enter your city" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="address">Address</label>
+              <input type="text" id="address" placeholder="Enter your address" required>
+            </div>
+            <div class="form-group">
+              <label for="country">Country</label>
+              <input type="text" id="country" placeholder="Enter your country" required>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="phone">Phone Number</label>
+              <input type="tel" id="phone" placeholder="Enter your phone number" required>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="bio">Bio: Tell us about yourself</label>
+            <textarea id="bio" placeholder="Share something about yourself..."></textarea>
+          </div>
+
+          <button type="submit" class="btn">Sign Up</button>
+          <p class="switch-text">Already have an account? <a href="#" id="go-to-login">Login</a></p>
+        </form>
+      </div>
+
+      <div class="info-section">
+        <h2>Why Join Suraksha Setu</h2>
+        <p>Learn life-saving skills, stay prepared for emergencies, and access exclusive resources to strengthen your safety journey.</p>
+
+        <ul class="features">
+          <li>Train with experts in disaster response</li>
+          <li>Access exclusive safety resources</li>
+          <li>Attend quizzes and lectures</li>
+          <li>Find trainers and volunteers</li>
+          <li>Share awareness and experiences</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const apiBase = '/api';
+
+    // LOGIN
+    document.getElementById('login-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const payload = {
+        email: document.getElementById('login-email').value,
+        password: document.getElementById('login-password').value
+      };
+
+      const res = await fetch(`${apiBase}/auth/login`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+      if (data.token) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        location.href = '/student/dashboard.html';
+      } else {
+        alert(data.error || 'Login failed');
+      }
+    });
+
+    // SIGNUP
+    document.getElementById('signup-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+
+      const password = document.getElementById('password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+      if (password !== confirmPassword) {
+        alert('Passwords do not match!');
+        return;
+      }
+
+      const payload = {
+        name: document.getElementById('full-name').value,
+        email: document.getElementById('email').value,
+        password: password,
+        dob: document.getElementById('dob').value,
+        address: document.getElementById('address').value,
+        phone: document.getElementById('phone').value,
+        bio: document.getElementById('bio').value,
+        school: document.getElementById('city').value,   // map city → school
+        region: document.getElementById('country').value || 'all' // map country → region
+      };
+
+      const res = await fetch(`${apiBase}/auth/register`, {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+      if (data.token) {
+        localStorage.setItem('token', data.token);
+        localStorage.setItem('user', JSON.stringify(data.user));
+        location.href = '/student/dashboard.html';
+      } else {
+        alert(data.error || 'Registration failed');
+      }
+    });
+
+    // SWITCH FORMS
+    document.getElementById('go-to-signup').addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('login-form').classList.remove('active');
+      document.getElementById('signup-form').classList.add('active');
+      toggleButtons('signup');
+    });
+
+    document.getElementById('go-to-login').addEventListener('click', (e) => {
+      e.preventDefault();
+      document.getElementById('signup-form').classList.remove('active');
+      document.getElementById('login-form').classList.add('active');
+      toggleButtons('login');
+    });
+
+    function toggleButtons(form) {
+      document.querySelectorAll('.toggle-btn').forEach(btn => {
+        btn.classList.remove('active');
+      });
+      document.querySelector(`.toggle-btn[data-form="${form}"]`).classList.add('active');
+    }
+
+    // Toggle buttons at top
+    document.querySelectorAll('.toggle-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const form = e.target.dataset.form;
+        if (form === 'login') {
+          document.getElementById('signup-form').classList.remove('active');
+          document.getElementById('login-form').classList.add('active');
+        } else {
+          document.getElementById('login-form').classList.remove('active');
+          document.getElementById('signup-form').classList.add('active');
+        }
+        toggleButtons(form);
+      });
+    });
+  </script>
+</body>
+</html>
+
